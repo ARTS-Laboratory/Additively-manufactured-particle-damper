@@ -1,0 +1,55 @@
+Changelog
+
+Yade_Unified_v2
+1. Changed where 'back' wall sphere generates.
+	It previously, counterintuitively, generated at the front wall
+2. Changed how wall sphere is generated.
+	Changed to be dependent on new variables 'indentVolume' and 'indentDepth'
+	This way, a sphere can be generated with a desired displaced volume.
+
+Yade_Unified_v2.1
+1. Changed code to add KE data to output file
+
+Yade_Unified_v2.2
+1. Changed wall sphere generation to do small scale testing
+2. Added code to recognize what simulation script is running.
+	No longer need to alter wall extension length manually.
+	
+Yade_Unified_v2.3
+1. Changed how wall sphere is generated.
+	Prevents the radius of the wall sphere from becoming larger than 3/4 the shortest wall
+	length. Auto adjusts indent depth accordingly, should make things more consistent.
+2. Changed yade_sdoftrial9.py graph.
+	Replaced force graphs with displacement graphs. Allows for quick and easy comparisons
+	between simulations.
+
+Yade_Unified_v2.5
+1. Patchwork solution to fix how force is applied. NEEDS TO BE REVISITED ASAP
+
+Yade_Unified_v2.6
+1. Fixed bug with how wall sphere is generated (originally introduced in v2.3)
+	Specifically changed the formula for local variable 'a' and the if/elif conditions
+	Spherical cap would not change size as expected due to a faulty formula.
+	Current fix appears to work, needs testing to be 100% sure.
+2. Made wall sphere generation its own function sphereGen()
+	Huge QoL improvement and overall makes the code better.
+3. Changed material of wall sphere
+	Done for compatibility with rest of code. Should not change simulation behavior.
+	
+Yade_Unified_v2.7
+1. Added ability to move wall sphere to all six sides of the pocket.
+	This is pending testing for accurate spherical cap volume. Will write debug code.
+2. Modified how ballvel() determines wall sphere velocity.
+	Previously it was a constant, but I discovered that the accuracy of the indent volume
+	was dependent on the simulation speed for some reason. This shouldn't have been the case
+	as the ballvel() function runs based on iterations and not real time. It has been fixed
+	by designating a function to scale the velocity based on particle count. However, this
+	may break not work well depending on the hardware, or at simulations larger than 12k particles. 
+	A more permanent fix may be in order.
+
+Yade_Unified_v2.8
+1. Modified how ballvel() determines wall sphere velocity.
+	Made it so that ballvel is no longer dependent on simulation speed but rather dynamically changes
+	based on distance to destination. This way it's hardware independent and easily controlled. Velocity
+	scales non-linearly for greater accuracy, as the indent sphere slows as it approaches the target.
+	Took way longer than I expected to fix, still needs to be cleaned up.
